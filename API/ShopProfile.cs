@@ -53,6 +53,8 @@ namespace SwiftShops.API
             return false;
         }
 
+        public override string ToString() => ID + " | " + DisplayName + $" - Activated: {(Activated ? "<color=#00FF00>" : "<color=#FF0000>")}" + Activated + "</color>";
+
         public static bool Purchase(ShopItem item, Player p, out string output) => item.Purchase(p, out output);
     }
 }

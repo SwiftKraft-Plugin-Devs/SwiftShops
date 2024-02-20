@@ -1,6 +1,5 @@
 ﻿using PluginAPI.Core;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace SwiftShops.API
@@ -52,7 +51,7 @@ namespace SwiftShops.API
                 prof.SetProfileActive(activeness);
         }
 
-        public static bool Purchase(string id, Player p, out string output)
+        public static bool Purchase(this Player p, string id, out string output)
         {
             if (TryGetItem(id, out ShopItem item))
                 return ShopProfile.Purchase(item, p, out output);
@@ -62,10 +61,14 @@ namespace SwiftShops.API
 
         public static ShopItem[] GetAllItems()
         {
-            ShopItem[] items = [];
+            List<ShopItem> items = [];
             foreach (ShopProfile prof in RegisteredShopProfiles.Values)
-                items.Concat(prof.GetAllItems());
-            return items;
+            {
+                ShopItem[] ss = prof.GetAllItems();
+                foreach (ShopItem s in ss)
+                    items.Add(s);
+            }
+            return [.. items];
         }
 
         public static ShopItem GetItem(string id, out ShopProfile profile)
