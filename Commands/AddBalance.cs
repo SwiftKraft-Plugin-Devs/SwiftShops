@@ -31,7 +31,7 @@ namespace SwiftShops.Commands
                 return false;
             }
 
-            List<Player> players = Player.GetPlayers();
+            List<Player> players = [Player.Get(sender)];
 
             if (TryGetArgument(args, 2, out string arg2))
             {
@@ -41,7 +41,7 @@ namespace SwiftShops.Commands
                     players = [p];
             }
 
-            players.RemoveAll((p) => string.IsNullOrEmpty(p.Nickname));
+            players.RemoveAll((p) => p == null || string.IsNullOrEmpty(p.Nickname));
 
             foreach (Player p in players)
                 p.SetBalance(p.GetBalance() + amount);
