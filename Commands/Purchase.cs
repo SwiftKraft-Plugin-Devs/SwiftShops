@@ -22,10 +22,12 @@ namespace SwiftShops.Commands
         {
             if (!TryGetArgument(args, 1, out string arg1))
             {
-                result = "\nYour Current Balance: <color=#FFFF00>$" + player.GetBalance() + "</color>\n\nItem List: \n";
+                result = "\n\nItem List: \n";
 
                 foreach (ShopItem item in ShopManager.GetAllItems())
                     result += "\n" + item.ToString();
+
+                result += "\n\nYour Current Balance: <color=#FFFF00>$" + player.GetBalance() + "</color>";
 
                 return true;
             }
