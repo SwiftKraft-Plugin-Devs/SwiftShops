@@ -33,7 +33,7 @@ namespace SwiftShops.Commands
                 return false;
             }
 
-            if (!TryGetArgument(args, 2, out string arg2) || !float.TryParse(arg2, out float amount) || amount <= 0f || amount > player.GetBalance())
+            if (!TryGetArgument(args, 2, out string arg2) || !int.TryParse(arg2, out int amount) || amount <= 0 || amount > player.GetBalance())
             {
                 result = "Please input a valid amount! ";
 
