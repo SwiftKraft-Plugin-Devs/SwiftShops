@@ -1,4 +1,5 @@
-﻿using PluginAPI.Core;
+﻿using PlayerRoles;
+using PluginAPI.Core;
 
 namespace SwiftShops.API
 {
@@ -8,8 +9,17 @@ namespace SwiftShops.API
 
         public string ID;
 
+        public RoleTypeId[] Blacklist = [];
+        public Faction[] BlacklistFaction = [];
+
         public virtual bool Purchase(Player p, out string output)
         {
+            if (!CanPurchase(p))
+            {
+                output = "You cannot purchase this item as " + RoleTranslations.GetRoleName(p.Role) + "! ";
+                return false;
+            }
+
             if (p.GetBalance() < Price)
             {
                 output = "Insufficient Funds! ";
@@ -23,6 +33,8 @@ namespace SwiftShops.API
 
             return effected;
         }
+
+        public bool CanPurchase(Player p) => !Blacklist.Contains(p.Role) && !BlacklistFaction.Contains(p.Role.GetFaction());
 
         public abstract bool Effect(Player p, out string output);
 

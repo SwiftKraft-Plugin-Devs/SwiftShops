@@ -25,7 +25,8 @@ namespace SwiftShops.Commands
                 result = "\n\nItem List: \n";
 
                 foreach (ShopItem item in ShopManager.GetAllItems())
-                    result += "\n" + item.ToString();
+                    if (item.CanPurchase(player))
+                        result += "\n" + item.ToString();
 
                 result += "\n\nYour Current Balance: <color=#FFFF00>$" + player.GetBalance() + "</color>";
 
