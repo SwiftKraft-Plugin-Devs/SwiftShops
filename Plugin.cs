@@ -8,7 +8,7 @@ namespace SwiftShops
     public class Plugin
     {
         /// <summary>
-        /// Singleton for the SwiftNPC API base plugin class. 
+        /// Singleton for the SwiftShops API base plugin class. 
         /// This can be used anywhere to access the base class.
         /// </summary>
         public static Plugin Instance;
