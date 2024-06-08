@@ -40,6 +40,6 @@ namespace SwiftShops.API
 
         public abstract string GetDisplayName();
 
-        public override string ToString() => "<color=#FFFFFF>" + ID + "</color> | " + GetDisplayName() + " | <color=#FFFF00>$" + Price + "</color>";
+        public override string ToString() => "<color=#FFFFFF>" + ID.ToUpper() + "</color> | " + GetDisplayName() + " | <color=#FFFF00>$" + Price + "</color>";
     }
 }

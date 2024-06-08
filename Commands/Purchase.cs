@@ -33,7 +33,7 @@ namespace SwiftShops.Commands
                 return true;
             }
 
-            return player.Purchase(arg1, out result);
+            return player.Purchase(arg1.ToUpper(), out result);
         }
     }
 }
