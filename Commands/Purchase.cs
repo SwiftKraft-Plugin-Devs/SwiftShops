@@ -28,7 +28,7 @@ namespace SwiftShops.Commands
                     if (item.CanPurchase(player))
                         result += "\n" + item.ToString();
 
-                result += "\n\nYour Current Balance: <color=#FFFF00>$" + player.GetBalance() + "</color>";
+                result += "\n\nYour Current Balance: $" + player.GetBalance();
 
                 return true;
             }
