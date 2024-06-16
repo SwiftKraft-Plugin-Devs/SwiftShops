@@ -1,10 +1,14 @@
 ﻿using PluginAPI.Core;
+using PluginAPI.Core.Items;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace SwiftShops.API
 {
     public class ShopProfile
     {
+        public static readonly Dictionary<ushort, WorldShopItem> WorldItems = [];
+
         public string ID;
         public string DisplayName;
 
@@ -53,8 +57,51 @@ namespace SwiftShops.API
             return false;
         }
 
-        public override string ToString() => ID + " | " + DisplayName + $" - Activated: {(Activated ? "<color=#00FF00>" : "<color=#FF0000>")}" + Activated + "</color>";
+        public override string ToString() => ID + " | " + DisplayName + " - Activated: " + Activated;
 
         public static bool Purchase(ShopItem item, Player p, out string output) => item.Purchase(p, out output);
+
+        public static ItemPickup CreateWorldItem(ShopItem item, ItemType droppedItem, Vector3 position, Quaternion rotation, int maxUses = 0)
+        {
+            ItemPickup pickup = ItemPickup.Create(droppedItem, position, rotation);
+            WorldItems.Add(pickup.Serial, new(item, pickup, maxUses));
+            pickup.Spawn();
+            return pickup;
+        }
+
+        public class WorldShopItem(ShopItem item, ItemPickup worldItem, int maxUses)
+        {
+            public readonly int MaxUses = maxUses;
+            public int CurrentUses { get; private set; } = maxUses;
+
+            public readonly ShopItem Item = item;
+
+            public readonly ItemPickup WorldItem = worldItem;
+
+            public bool CanPurchase() => MaxUses <= 0 || CurrentUses < MaxUses;
+
+            public bool Purchase(Player p, out string output)
+            {
+                if (!CanPurchase())
+                {
+                    WorldItem.Destroy();
+                    output = "Max Uses Reached! ";
+                    return false;
+                }
+
+                bool purchase = Item.Purchase(p, out output);
+
+                if (purchase)
+                {
+                    if (MaxUses > 0)
+                        output += "\nUses: " + ++CurrentUses + "/" + MaxUses;
+
+                    if (!CanPurchase())
+                        WorldItem.Destroy();
+                }
+
+                return purchase;
+            }
+        }
     }
 }

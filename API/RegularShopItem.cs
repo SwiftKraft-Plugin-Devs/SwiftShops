@@ -1,4 +1,5 @@
 ﻿using PluginAPI.Core;
+using SwiftAPI.Utility;
 
 namespace SwiftShops.API
 {
@@ -10,7 +11,7 @@ namespace SwiftShops.API
         {
             bool status = base.Effect(p, out output);
             if (status)
-                p.AddItem(Item);
+                p.GiveItem(Item);
             return status;
         }
 
