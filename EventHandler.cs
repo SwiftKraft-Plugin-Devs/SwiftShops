@@ -1,8 +1,12 @@
 ﻿using Hints;
+using InventorySystem;
+using InventorySystem.Items.Pickups;
+using MEC;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
 using SwiftShops.API;
+using UnityEngine;
 
 namespace SwiftShops
 {
@@ -16,16 +20,24 @@ namespace SwiftShops
         }
 
         [PluginEvent(ServerEventType.PlayerSearchedPickup)]
-        public bool PlayerSearchedPickup(PlayerSearchedPickupEvent _event)
+        public void PlayerSearchedPickup(PlayerSearchedPickupEvent _event)
         {
             if (!ShopProfile.WorldItems.ContainsKey(_event.Item.Info.Serial))
-                return true;
+                return;
+
+            Vector3 pos = _event.Item.Position;
+            Quaternion rot = _event.Item.Rotation;
 
             ShopProfile.WorldShopItem item = ShopProfile.WorldItems[_event.Item.Info.Serial];
 
             bool status = item.Purchase(_event.Player, out string output);
             _event.Player.ReceiveHint(output + "\nYour Balance: " + _event.Player.GetBalance(), [HintEffectPresets.FadeOut()]);
-            return false;
+            Timing.CallDelayed(Timing.WaitForOneFrame, () =>
+            {
+                ItemPickupBase it = _event.Player.ReferenceHub.inventory.ServerDropItem(_event.Item.Info.Serial);
+                it.Position = pos;
+                it.Rotation = rot;
+            });
         }
 
         [PluginEvent(ServerEventType.PlayerSearchPickup)]
