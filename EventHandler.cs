@@ -35,7 +35,7 @@ namespace SwiftShops
             Timing.CallDelayed(Timing.WaitForOneFrame, () =>
             {
                 ItemPickupBase it = _event.Player.ReferenceHub.inventory.ServerDropItem(_event.Item.Info.Serial);
-                it.Position = pos;
+                it.Position = pos + Vector3.up * 0.2f;
                 it.Rotation = rot;
             });
         }

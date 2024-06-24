@@ -15,6 +15,6 @@ namespace SwiftShops.API
             return status;
         }
 
-        public override string GetDisplayName() => Translations.Get(Item);
+        public override string GetDisplayName() => Item.ToString();
     }
 }
